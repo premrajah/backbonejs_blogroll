@@ -1,3 +1,8 @@
+// Change backbone 'id' to match mongodb '_id'
+Backbone.Model.prototype.idAttribute = '_id';
+
+
+
 // Backbone Model 
 var Blog = Backbone.Model.extend({
   defaults: {
@@ -55,12 +60,28 @@ var BlogView = Backbone.View.extend({
     this.model.set('author', this.$('.author-update').val()); // added this to remove setTimeout 
     this.model.set('title', this.$('.title-update').val());
     this.model.set('url', this.$('.url-update').val());
+
+    this.model.save(null, {
+      success: function(response) {
+        console.log("Successfully UPDATED blog with id: " + response.toJSON()._id);
+      },
+      error: function() {
+        console.log("Failed to UPDATE blog.")
+      }
+    });
   },
   cancel: function () {
     blogsView.render();
   },
   delete: function () {
-    this.model.destroy();
+    this.model.destroy({
+      success: function(response) {
+        console.log("Successfully DELETED blog with id: " + response.toJSON()._id);
+      },
+      error: function() {
+        console.log("Failed to DELETE blog.");
+      }
+    });
   },
   render: function () {
     this.$el.html(this.template(this.model.toJSON()));
