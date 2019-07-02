@@ -1,0 +1,23 @@
+{
+  "name": "backbonejs_blogroll",
+  "homepage": "https://github.com/premrajah/backbonejs_blogroll",
+  "authors": [
+    "Prem Rajah <prajah@ctlondon.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "backbone": "^1.4.0",
+    "jquery": "^3.4.1",
+    "bootstrap": "^4.3.1",
+    "underscore": "^1.9.1"
+  }
+}
