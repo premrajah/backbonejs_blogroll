@@ -8,7 +8,9 @@ var Blog = Backbone.Model.extend({
 });
 
 // Backbone Collection
-var Blogs = Backbone.Collection.extend({});
+var Blogs = Backbone.Collection.extend({
+  url: "http://localhost:3000/api/blogs"
+});
 
 // Instantiate two blogs 
 /*
@@ -82,6 +84,18 @@ var BlogsView = Backbone.View.extend({
     }, this);
     //listen for removal for item in the collection to delete
     this.model.on('remove', this.render, this);
+
+    // initial load from db
+    this.model.fetch({
+      success : function(response){
+        _.each(response.toJSON(), function(item) {
+          console.log("Successfully GOT blog with _id: " + item._id);
+        });
+      },
+      error: function() {
+        console.log("Failed to get blogs.");
+      }
+    });
   },
   render: function () {
     var self = this; // to access this element

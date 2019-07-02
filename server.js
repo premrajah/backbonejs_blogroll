@@ -24,6 +24,16 @@ blog.save();  // saves to server (mongo)
 var app = express();
 app.use(express.static(__dirname + '/public'));
 
+// ROUTES
+app.get('/api/blogs', function(req, res) {
+  Blog.find(function(err, docs) {
+    docs.forEach(item => {
+      console.log("Received a GET request for _id: " + item._id);
+    });
+    res.send(docs);
+  });
+});
+
 var port = 3000;
 app.listen(port);
-console.log('Server on : ', port);
+console.log('Server on : ' + port);
