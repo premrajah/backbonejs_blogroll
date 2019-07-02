@@ -29,13 +29,15 @@ var BlogView = Backbone.View.extend({
   },
   events: {
     'click .edit-blog': 'edit',
-    'click .update-blog' : 'update'
+    'click .update-blog': 'update',
+    'click .cancel': 'cancel',
+    'click .delete-blog': 'delete'
   },
-  edit: function() {
-    $(".edit-blog").hide();
-    $(".delete-blog").hide();
-    $(".update-blog").show();
-    $(".cancel").show();
+  edit: function () {
+    this.$(".edit-blog").hide();
+    this.$(".delete-blog").hide();
+    this.$(".update-blog").show();
+    this.$(".cancel").show();
 
     // store values
     var author = this.$('.author').html();
@@ -46,6 +48,17 @@ var BlogView = Backbone.View.extend({
     this.$('.author').html('<input type="text" class="form-control author-update" value="' + author + '">');
     this.$('.title').html('<input type="text" class="form-control title-update" value="' + title + '">');
     this.$('.url').html('<input type="text" class="form-control url-update" value="' + url + '">');
+  },
+  update: function () {
+    this.model.set('author', this.$('.author-update').val()); // added this to remove setTimeout 
+    this.model.set('title', this.$('.title-update').val());
+    this.model.set('url', this.$('.url-update').val());
+  },
+  cancel: function () {
+    blogsView.render();
+  },
+  delete: function () {
+    this.model.destroy();
   },
   render: function () {
     this.$el.html(this.template(this.model.toJSON()));
@@ -58,7 +71,17 @@ var BlogsView = Backbone.View.extend({
   model: blogs,
   el: $('.blogs-list'),
   initialize: function () {
+    var self = this;
+
     this.model.on('add', this.render, this);
+    // needs a slight delay
+    this.model.on('change', function () {
+      // setTimeout(() => {
+      self.render();
+      // }, 30);
+    }, this);
+    //listen for removal for item in the collection to delete
+    this.model.on('remove', this.render, this);
   },
   render: function () {
     var self = this; // to access this element
@@ -96,7 +119,7 @@ $(document).ready(function () {
       authorInput.val('');
       titleInput.val('');
       urlInput.val('');
-      
+
       blogs.add(blog); // will trigger the initialize for blog view
     }
 
