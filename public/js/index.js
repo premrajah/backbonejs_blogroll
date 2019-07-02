@@ -127,7 +127,6 @@ $(document).ready(function () {
         title: titleInput.val(),
         url: urlInput.val()
       });
-      // console.log(blog.toJSON());
 
       // Clear fields
       authorInput.val('');
@@ -135,6 +134,17 @@ $(document).ready(function () {
       urlInput.val('');
 
       blogs.add(blog); // will trigger the initialize for blog view
+
+      // add to db
+      blog.save(null, {
+        success: function(response) {
+          console.log("Successfully SAVED blog with id: " + response.toJSON()._id);
+        },
+        error: function() {
+          console.log("Failed to save Blog");
+        }
+      });
+
     }
 
   });
